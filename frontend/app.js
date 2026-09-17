@@ -6,6 +6,7 @@ const contentInput = document.getElementById("content");
 const notesContainer = document.getElementById("notesContainer");
 const refreshBtn = document.getElementById("refreshBtn");
 const searchInput = document.getElementById("searchInput");
+const statusMessage = document.getElementById("statusMessage");
 
 
 // Load notes
@@ -138,6 +139,7 @@ noteForm.addEventListener("submit", async (event) => {
         }
 
         noteForm.reset();
+        showStatus("Note created successfully!");
 
         await loadNotes();
 
@@ -172,7 +174,7 @@ async function deleteNote(id) {
         if (!response.ok) {
             throw new Error(data.message || "Failed to delete note");
         }
-
+        showStatus("Note deleted successfully!");
         await loadNotes();
 
     } catch (error) {
@@ -231,7 +233,7 @@ async function editNote(id, oldTitle, oldContent) {
             );
         }
 
-        alert("Note updated successfully!");
+        showStatus("Note updated successfully!");
 
         await loadNotes();
 
@@ -263,3 +265,13 @@ function escapeHtml(text) {
 
 // Initial load
 loadNotes();
+// Show status message
+function showStatus(message, type = "success") {
+    statusMessage.textContent = message;
+    statusMessage.className = `status-message ${type}`;
+
+    setTimeout(() => {
+        statusMessage.textContent = "";
+        statusMessage.className = "status-message";
+    }, 3000);
+}
