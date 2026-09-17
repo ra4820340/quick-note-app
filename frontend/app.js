@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/notes";
+const API_URL = "https://quick-note-app-dboa.onrender.com/notes";
 
 const noteForm = document.getElementById("noteForm");
 const titleInput = document.getElementById("title");
