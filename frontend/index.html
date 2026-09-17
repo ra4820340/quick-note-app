@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quick Notes</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1>📝 Quick Notes</h1>
+            <p>Write it. Save it. Remember it.</p>
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <!-- Create Note -->
+        <section class="note-form-section">
+
+            <h2>Create a New Note</h2>
+
+            <form id="noteForm">
+
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="Note title"
+                    required
+                >
+
+                <textarea
+                    id="content"
+                    placeholder="Write your note here..."
+                    rows="6"
+                    required
+                ></textarea>
+
+                <button type="submit">
+                    Add Note
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- Notes -->
+        <section class="notes-section">
+
+            <div class="section-header">
+                <h2>My Notes</h2>
+
+                <button id="refreshBtn" class="refresh-btn">
+                    🔄 Refresh
+                </button>
+            </div>
+
+            <div id="notesContainer" class="notes-container">
+
+                <p class="loading">
+                    Loading notes...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>Quick Notes • Built with Node.js, Express & JavaScript</p>
+    </footer>
+
+
+    <script src="app.js"></script>
+
+</body>
+</html>
