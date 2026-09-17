@@ -62,8 +62,51 @@ app.post("/notes", (req, res) => {
   }
 });
 
+
+// PUT /notes/:id
+app.put("/notes/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+
+    if (!title || !content) {
+      return res.status(400).json({
+        message: "Title and content are required",
+      });
+    }
+
+    const notes = JSON.parse(fs.readFileSync(notesFile, "utf8"));
+
+    const noteIndex = notes.findIndex((note) => note.id === id);
+
+    if (noteIndex === -1) {
+      return res.status(404).json({
+        message: "Note not found",
+      });
+    }
+
+    notes[noteIndex].title = title;
+    notes[noteIndex].content = content;
+
+    fs.writeFileSync(
+      notesFile,
+      JSON.stringify(notes, null, 2)
+    );
+
+    res.json({
+      message: "Note updated successfully",
+      note: notes[noteIndex],
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to update note",
+    });
+  }
+});
 // DELETE /notes/:id
 app.delete("/notes/:id", (req, res) => {
+
+    
   try {
     const { id } = req.params;
 
