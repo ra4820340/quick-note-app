@@ -33,6 +33,7 @@ async function loadNotes() {
 }
 
 
+
 // Display notes
 function displayNotes(notes) {
 
@@ -61,19 +62,29 @@ function displayNotes(notes) {
                         Created: ${date}
                     </div>
 
-                    <button
-                        class="delete-btn"
-                        onclick="deleteNote('${note.id}')"
-                    >
-                        🗑️ Delete
-                    </button>
+                    <div class="note-actions">
+
+                        <button
+                            class="edit-btn"
+                            onclick="editNote('${note.id}', '${escapeHtml(note.title)}', '${escapeHtml(note.content)}')"
+                        >
+                            ✏️ Edit
+                        </button>
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteNote('${note.id}')"
+                        >
+                            🗑️ Delete
+                        </button>
+
+                    </div>
 
                 </article>
             `;
         })
         .join("");
 }
-
 
 // Create note
 noteForm.addEventListener("submit", async (event) => {
@@ -146,6 +157,66 @@ async function deleteNote(id) {
         if (!response.ok) {
             throw new Error(data.message || "Failed to delete note");
         }
+
+        await loadNotes();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+    }
+}
+
+// Edit note
+async function editNote(id, oldTitle, oldContent) {
+
+    const title = prompt("Enter new title:", oldTitle);
+
+    if (title === null) {
+        return;
+    }
+
+    const content = prompt("Enter new content:", oldContent);
+
+    if (content === null) {
+        return;
+    }
+
+    const trimmedTitle = title.trim();
+    const trimmedContent = content.trim();
+
+    if (!trimmedTitle || !trimmedContent) {
+        alert("Title and content are required.");
+        return;
+    }
+
+    try {
+
+        const response = await fetch(`${API_URL}/${id}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                title: trimmedTitle,
+                content: trimmedContent
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.message || "Failed to update note"
+            );
+        }
+
+        alert("Note updated successfully!");
 
         await loadNotes();
 
