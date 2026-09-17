@@ -5,6 +5,7 @@ const titleInput = document.getElementById("title");
 const contentInput = document.getElementById("content");
 const notesContainer = document.getElementById("notesContainer");
 const refreshBtn = document.getElementById("refreshBtn");
+const searchInput = document.getElementById("searchInput");
 
 
 // Load notes
@@ -36,6 +37,20 @@ async function loadNotes() {
 
 // Display notes
 function displayNotes(notes) {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+
+    const filteredNotes = notes.filter(note =>
+        note.title.toLowerCase().includes(searchTerm) ||
+        note.content.toLowerCase().includes(searchTerm)
+    );
+
+    if (filteredNotes.length === 0) {
+        notesContainer.innerHTML =
+            '<p class="empty">No matching notes found.</p>';
+        return;
+    }
+
+    notes = filteredNotes;
 
     if (notes.length === 0) {
 
@@ -231,6 +246,8 @@ async function editNote(id, oldTitle, oldContent) {
 
 // Refresh button
 refreshBtn.addEventListener("click", loadNotes);
+// Search notes
+searchInput.addEventListener("input", loadNotes);
 
 
 // Basic HTML escaping
